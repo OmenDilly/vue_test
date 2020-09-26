@@ -1,23 +1,18 @@
 <template>
-    <div class='card__container'>
-        <div class='timer__card'>
-            <span>{{timer.value}}</span>
-            <div class='card__actions'>
-                <span classs='play'>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill='white' viewBox="0 0 18 18" width="18px" height="18px"><path d="M0 0h24v24H0z" fill="none"/><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
-                </span>
-                <span class='stop'>
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18" fill="white" width="18px" height="18px"><path d="M0 0h24v24H0z" fill="none"/><path d="M6 6h12v12H6z"/></svg>
-                </span>
-            </div>
+    <div class='timer__card'>
+        <span class='value'>{{timer.value}}</span>
+        <div class='card__actions'>
+            <span class='play__button material-icons'>
+                play_arrow
+            </span>
+            <span class='stop__button material-icons'>
+                stop
+            </span>
         </div>
-
     </div>
-
 </template>
 
 <script>
-
 export default {
     props: {
         timer: {
@@ -27,22 +22,54 @@ export default {
     }
 }
 </script>
+
 <style scoped>
     .timer__card {
         background-color: #696969;
         color: #9E9E9E;
         font-size: 22px;
-        /* width: 200px; */
-
-        /* margin: 10px; */
+        display: grid;
+        grid-template-rows: repeat(2, 60px);
     }
 
-    /* .card__actions {
-        display: flex;
-        justify-content: space-evenly;
-    } */
-    
+    .value {
+        align-self: center;
+        text-align: center;
+    }
+
+
+
+    .card__actions {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 48px;
+        align-items: center;
+        border-top: solid #9E9E9E 2px;
+        /* justify-items: end; */
+        /* align-self: center;
+        justify-self: center; */
+    }
+
+    .card__actions span {
+        cursor: pointer;
+        font-size: 30px;
+
+    }
+
+    .card__actions span:hover {
+        color: white;
+    }
+
+    .play__button {
+        justify-self: end;
+    }
+
+    .stop__button {
+        justify-self: start;
+    }
+
     .active {
+        border-color: white;
         color: white;
     }
 </style>
