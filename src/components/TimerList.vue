@@ -3,17 +3,23 @@
         <Timer 
             v-for='timer of timers'
             v-bind:key='timer.id'
-            v-bind:timer="timer"
+            v-bind:timer='timer'
+            @delete-timer='deleteTimer'
+            @set-active='setActive'
+            @reset='resetTimer'
         />
-        <span class='add__button material-icons'>
-            add
-        </span>
+        <NewTimer
+            @add-timer='addTimer'
+        />
+
     </div>
 
 </template>
 
 <script>
 import Timer from '@/components/Timer'
+import NewTimer from '@/components/NewTimer'
+
 export default {
     props: {
         timers: {
@@ -21,8 +27,24 @@ export default {
             required: true
         }
     },
+    methods: {
+        deleteTimer(id) {
+            this.$emit('delete-timer', id)
+        },
+        addTimer(newTimer) {
+            this.$emit('add-timer', newTimer)
+        },
+        setActive(id) {
+            this.$emit('set-active', id)
+        },
+        resetTimer(id) {
+            this.$emit('reset', id)
+        }
+
+    },
     components: {
-        Timer
+        Timer,
+        NewTimer
     }
 }
 </script>
@@ -35,8 +57,6 @@ export default {
         align-items: stretch;
         justify-items: stretch;
         grid-template-columns: repeat(3, 225px);
-        /* grid-template-columns: repeat(auto-fill, 225px); */
-
     }
 
     @media screen and (max-width: 768px) {
@@ -44,27 +64,10 @@ export default {
             grid-template-columns: repeat(2, 225px);
         }
     }
+
     @media screen and (max-width: 320px) {
         .card__container {
             grid-template-columns: repeat(1, 225px);
         }
-    }
-  
-    .add__button {
-        background-color: #696969;
-        color: #9E9E9E;
-        font-size: 30px;
-        display: grid;
-        cursor: pointer;
-        align-items: center;
-        justify-items: center;
-        min-height: 120px;
-        min-width: 225px;
-    }
-
-    .add__button:hover {
-        background-color: #9E9E9E;
-        color: white;
-    }
-
+    } 
 </style>
