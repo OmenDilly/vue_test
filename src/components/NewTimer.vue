@@ -133,7 +133,6 @@
         watch: {
             // проверка значений на корректность
             seconds(val) {
-                                
                 if (val > 59) {
                     this.seconds = 59
                 }
