@@ -28,7 +28,7 @@
                     <span 
                         class="up material-icons"
                         id='increase'
-                        @click="setHrs"
+                        @click="hours++"
                     >
                         expand_less
                     </span>
@@ -37,12 +37,12 @@
                         min="0" 
                         type="number"
                         id='type'
-                        v-model="time.hours"
+                        v-model="hours"
                     >
                     <span 
                         class="down material-icons"
                         id='decrease'
-                        @click="setHrs"
+                        @click="hours--"
                     >
                         expand_more
                     </span>
@@ -52,7 +52,7 @@
                     <span 
                         class="up material-icons"
                         id='increase'
-                        @click="time.minutes++"
+                        @click="minutes++"
                     >
                         expand_less
                     </span>
@@ -61,12 +61,12 @@
                         min="0"
                         step="5" 
                         type="number" 
-                        v-model="time.minutes"
+                        v-model="minutes"
                     >
                     <span 
                         class="down material-icons"
                         id='decrease'
-                        @click="time.minutes--"
+                        @click="minutes--"
                     >
                         expand_more
                     </span>
@@ -76,7 +76,7 @@
                     <span 
                         class="up material-icons"
                         id='increase'
-                        @click="setSec"
+                        @click="seconds++"
                     >
                         expand_less
                     </span>
@@ -86,13 +86,12 @@
                         min="0"
                         type="number" 
                         id=type
-                        @change='setSec'
-                        v-bind:value="time.seconds"
+                        v-model="seconds"
                     >
                     <span 
                         class="down material-icons"
                         id='decrease'
-                        @click="setSec"
+                        @click="seconds--"
                     >
                         expand_more
                     </span>
@@ -123,46 +122,41 @@
     export default {
         data() {
             return {
-                time: {
-                    seconds: 0,
-                    minutes: 0,
-                    hours: 0
-                },
+                // time: {
+                seconds: 0,
+                minutes: 0,
+                hours: 0,
+                // },
                 newTimer: false
             }
         },
-        computed: {
-            // проверка введенных чисел на корректность
-            validateTime() {
-                let hrs = this.time.hours
-                let min = this.time.minutes
-                let sec = this.time.seconds
-
-                // let hrs = 0
-                // let min = 0
-                // let sec = 0
-                
-                if (hrs > 24) {
-                    hrs = 24
+        watch: {
+            // проверка значений на корректность
+            seconds(val) {
+                                
+                if (val > 59) {
+                    this.seconds = 59
                 }
-                if (hrs < 0) {
-                    hrs = 0
+                if (val < 0) {
+                    this.seconds = 0
                 }
-                if (min > 60) {
-                    min = 60
-                }
-                if (min < 0) {
-                    min = 0
-                }
-                if (sec > 60) {
-                    sec = 60
-                }
-                if (sec < 0) {
-                    sec = 0
-                }
-
-                return {hrs, min, sec}
             },
+            minutes(val) {
+                if (val > 59) {
+                    this.minutes = 59
+                }
+                if (val < 0) {
+                    this.minutes = 0
+                }
+            },
+            hours(val) {
+                if (val > 24) {
+                    this.hours = 24
+                }
+                if (val < 0) {
+                    this.hours = 0
+                }
+            }
         },
         methods: {
             // функция подтверждения создания нового таймера
@@ -171,14 +165,14 @@
                 const new_timer = {
                     id: Date.now(),
                     defaultValues: {
-                        hours: this.validateTime.hrs,
-                        minutes: this.validateTime.min,
-                        seconds: this.validateTime.sec
+                        hours: parseInt(this.hours),
+                        minutes: parseInt(this.minutes),
+                        seconds: parseInt(this.seconds)
                     },
                     values: {
-                        hours: this.validateTime.hrs,
-                        minutes: this.validateTime.min,
-                        seconds: this.validateTime.sec
+                        hours: parseInt(this.hours),
+                        minutes: parseInt(this.minutes),
+                        seconds: parseInt(this.seconds)
                     },
                     active: false,
                     interval: null
@@ -192,60 +186,6 @@
                     minutes: 0,
                     seconds: 0
                 }
-            },
-            setHrs(e) {
-                // let timeUnit = e.currentTarget.parentElement.id
-                let action = e.currentTarget.id
-                console.log(this.time.hours)
-                // switch (timeUnit) {
-                //     case 'hours':
-                if (action === 'decrease') {
-                    if (this.time.hours == 0) {
-                        return this.time.hours
-                    }
-                    this.time.hours--
-                }
-                if (action === 'increase') {
-                    if (this.time.hours == 24) {
-                        return this.time.hours
-                    }
-                    this.time.hours++
-                }
-            },
-            setSec(e) {
-                let action = e.currentTarget.id
-                console.log(this.time.seconds)
-                // switch (timeUnit) {
-                //     case 'hours':
-                if (action === 'decrease') {
-                    if (this.time.seconds == 0) {
-                        this.time.seconds = 60
-                        if (this.time.minutes != 0) {
-                            this.time.minutes--
-                        }
-                    }
-                    this.time.seconds--
-                }
-                if (action === 'increase') {
-                    if (this.time.seconds == 59) {
-                        this.time.seconds = -1
-                        if (this.time.minutes != 59) {
-                            this.time.minutes++
-                        }
-                    }
-                    this.time.seconds++
-                }
-                // if (action === 'type') {
-                //     if (e.currentTarget.value == 0) {
-                //         this.time.hours = 0
-                //         this.time.minutes--
-                //     }
-                //     if (e.currentTarget.value == 59) {
-                //         this.time.seconds = 60
-                //         this.time.minutes--
-                //     }
-                //     return this.time.seconds
-                // }
             }
         }
     }

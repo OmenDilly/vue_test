@@ -65,11 +65,11 @@
         // функция запуска найденного таймера
         const startTimer = () => {
           // начало отсчета
-          if (activeTimer.values.seconds != 0) {
+          if (activeTimer.values.seconds != -1) {
             activeTimer.values.seconds--
           }
 
-          if (activeTimer.values.seconds == 0) {
+          if (activeTimer.values.seconds == -1) {
             if (activeTimer.values.minutes != 0) {
               activeTimer.values.seconds = 59
               activeTimer.values.minutes--
@@ -77,7 +77,7 @@
           }
 
           if (activeTimer.values.minutes == 0) {
-            if (activeTimer.values.seconds == 0) {
+            if (activeTimer.values.seconds == -1) {
               if (activeTimer.values.hours != 0) {
                   activeTimer.values.minutes = 59
                   activeTimer.values.seconds = 59
