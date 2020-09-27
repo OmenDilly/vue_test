@@ -18,14 +18,24 @@
         >
             <div class="time__input">
                 <div class="time__unit hours">
-                    <span class="up"></span>
+                    <span 
+                        class="up material-icons"
+                        @click='time.hours++'
+                    >
+                        expand_less
+                    </span>
                     <input
                         max='24'
                         min='0' 
                         type="number" 
                         v-model='time.hours'
                     >
-                    <span class="down"></span>
+                    <span 
+                        class="down material-icons"
+                        @click='time.hours--'
+                    >
+                        expand_more
+                    </span>
                 </div>
                 <div class="time__unit minutes">
                     <span class="up"></span>
@@ -96,7 +106,8 @@
                         minutes: this.time.minutes,
                         seconds: this.time.seconds
                     },
-                    active: false
+                    active: false,
+                    interval: null
                 }
                 this.$emit('add-timer', new_timer)
                 this.newTimer = false
@@ -117,7 +128,14 @@
     }
 
     .time__unit input {
-        max-width: 30px;
+        text-align: center;
+        max-width: 25px;
+        background: transparent;
+        border: none;
+        outline: none;
+        color: #9E9E9E;
+        max-height: 25px;
+        font-size: 25px;
     }
 
     .add__button {
@@ -130,42 +148,71 @@
         cursor: pointer;
         transition: all .3s;
     }
-/* 
+
     input[type=number]::-webkit-inner-spin-button,
     input[type=number]::-webkit-outer-spin-button
     {
         -webkit-appearance: none;
         margin: 0;
-    } */
+    }
 
     .new__timer {
         display: grid;
-        /* grid-template-columns: repeat(2, 1fr); */
         grid-row: repeat(2, 1fr);
         align-self: stretch;
         justify-self: stretch;
-        /* align-items: center;
-        justify-items: center; */
     }
 
     .new__timer span {
         cursor: pointer;
         transition: all .3s;
+        font-size: 30px;
     }
 
     .add__actions {
         display: grid;
+        border-top: solid #9E9E9E 2px;
         grid-template-columns: repeat(2, 1fr);
         align-items: center;
         justify-items: center;
     }
     
+    
 
     .time__input {
         display: grid;
-        align-items: center;
-        justify-items: center;
+        /* align-items: center;
+        justify-items: stretch; */
         grid-template-columns: repeat(3, 1fr);
+    }
+    .time__input .time__unit {
+        display: grid;
+        /* align-items: center; */
+        justify-items: center;
+        align-items: center;
+        grid-template-columns: 1fr;
+
+    }
+
+    .time__unit span {
+        font-size: 20px;
+        /* align-self: center;
+        border-top: 1px solid white; */
+    }
+
+    .time__input .time__unit.hours {
+        justify-self: end;
+
+    }
+    
+    .time__input .time__unit.minutes {
+        justify-self: center;
+
+    }
+
+    .time__input .time__unit.seconds {
+        justify-self: start;
+
     }
 
     .new__timer span:hover {
@@ -173,9 +220,6 @@
         align-items: center;
         justify-items: center;
         transform: scale(1.2);
-    }
-
-    .new__timer input {
     }
 
     .add__button:hover {

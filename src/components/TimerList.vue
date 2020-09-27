@@ -7,6 +7,7 @@
             @delete-timer='deleteTimer'
             @set-active='setActive'
             @reset='resetTimer'
+            @set-unactive='unActive'
         />
         <NewTimer
             @add-timer='addTimer'
@@ -39,6 +40,9 @@ export default {
         },
         resetTimer(id) {
             this.$emit('reset', id)
+        },
+        unActive(id) {
+            this.$emit('set-unactive', id)
         }
 
     },

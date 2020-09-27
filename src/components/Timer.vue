@@ -6,23 +6,25 @@
         <p
             class='value'
         >
-            {{timer.values.hours >= 10 ? timer.values.hours + ':' : 0 + timer.values.hours + ':'}}{{timer.values.minutes >= 10 ? timer.values.minutes + ':' : 0 + timer.values.minutes + ':'}}{{timer.values.seconds >= 10 ? timer.values.seconds : 0 + timer.values.seconds}}
+            {{parsedTimer}}
         </p>
 
         <div 
             class='card__actions'
         >
             <span 
+                v-if="timer.active"
+                class='play__button material-icons'
+                @click='unActive'
+            >
+                pause
+            </span>
+            <span 
+                v-else
                 class='play__button material-icons'
                 @click='setActive'
             >
-            {{!timer.active ? 'play_arrow' : 'pause'}}
-                <!-- <input 
-                    type="checkbox" 
-                    id='media__button'
-                    @change='timer.active = !timer.active'
-                >
-                <label for="media__button">{{!timer.active ? 'play_arrow' : 'pause'}}</label> -->
+                play_arrow
             </span>
             <span 
                 class='stop__button material-icons'
@@ -52,15 +54,30 @@ export default {
         setActive() {
             // console.log(this.timer.active)
             this.$emit('set-active', {id: this.timer.id, active: this.timer.active})
-            this.timer.active = !this.timer.active
+            this.timer.active = true
+        },
+        unActive() {
+            this.$emit('set-unactive', this.timer.id)
+            this.timer.active = false
         },
         resetTimer() {
             this.$emit('reset', this.timer.id)
         }
 
     },
-    mounted() {
-        console.log(this.timer)
+    computed: {
+        parsedTimer() {
+            let hours = this.timer.values.hours
+            let minutes = this.timer.values.minutes
+            let seconds = this.timer.values.seconds
+            let pHours = hours >= 10 ? hours : '0' + hours
+            let pMinutes = minutes >= 10 ? minutes : '0' + minutes
+            let pSeconds = seconds >= 10 ? seconds : '0' + seconds
+            // let parsed = `${hours > 0 ? pHours + ':' : ''}${minutes > 0 ? pMinutes + ':' : ''}${pSeconds}`
+            let parsed = `${pHours}:${pMinutes}:${pSeconds}`
+            return parsed
+
+        }
     }
 }
 </script>

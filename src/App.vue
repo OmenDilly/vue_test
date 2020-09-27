@@ -6,6 +6,7 @@
       @add-timer='addTimer'
       @set-active='setActive'
       @reset='resetTimer'
+      @set-unactive='unActive'
     />
   </div>
 </template>
@@ -16,9 +17,7 @@ export default {
   name: 'App',
   data() {
     return {
-      timers: [
-
-      ]
+      timers: [],
     }
   },
   components: {
@@ -26,20 +25,33 @@ export default {
   },
   methods: {
     deleteTimer(id) {
+      let activeTimer = this.timers.find(timer => timer.id == id).interval
+      clearInterval(activeTimer)
       this.timers = this.timers.filter(timer => timer.id !== id)
     },
     addTimer(timer) {
       this.timers.push(timer)
     },
+    unActive(id) {
+      let activeTimer = this.timers.find(timer => timer.id == id).interval
+      clearInterval(activeTimer)
+    },
     resetTimer(id) {
-      let targetTimer = this.timers.find(item => item.id === id)
-      const defVal = targetTimer.defaultValues
-      targetTimer.values = defVal
-      
+      let targetTimer = this.timers.find(item => item.id == id)
+      const defaultHours = targetTimer.defaultValues.hours
+      const defaultMinutes = targetTimer.defaultValues.minutes
+      const defaultSeconds = targetTimer.defaultValues.seconds
+      targetTimer.values = {
+        hours: defaultHours,
+        minutes: defaultMinutes,
+        seconds: defaultSeconds
+      }
+      targetTimer.active = false
+      clearInterval(targetTimer.interval)
+      console.log(this.onTimer, id)
     },
     setActive(data) {
       console.log(data.active)
-      let onTimer
       let activeTimer = this.timers.find(item => item.id === data.id)
 
 
@@ -48,7 +60,6 @@ export default {
           console.log(activeTimer.values.seconds)
 
           if (activeTimer.values.seconds != 0) {
-            // activeTimer.values.seconds = 59
             activeTimer.values.seconds--
           }
 
@@ -64,16 +75,13 @@ export default {
               activeTimer.values.hours--
             }
           }
-          // if (data.active) {
             if (activeTimer.values.hours == 0 && activeTimer.values.minutes == 0 && activeTimer.values.seconds == 0) {
-              clearInterval(onTimer);
+              clearInterval(this.onTimer);
               activeTimer.active = false
-              // alert("Reached zero");
             }
-          // }
 
         }
-        onTimer = setInterval(startTimer, 1000);
+        activeTimer.interval = setInterval(startTimer, 1000)
       
     }
 
