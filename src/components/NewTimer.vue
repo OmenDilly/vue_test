@@ -2,75 +2,105 @@
     <div
         class="add__card"
     >
+        <!-- кнопка для добавления нового таймера -->
         <span
-            v-if='!newTimer'
-            @click='newTimer = true'
-            class='add__button material-icons'
+            v-if="!newTimer"
+            @click="newTimer = true"
+            class="add__button material-icons"
         >
             <p>
-            add
-
+                add
             </p>
         </span>
+        <!-- форма добавления таймера -->
         <div 
-            v-if='newTimer'
-            class='new__timer'
+            v-if="newTimer"
+            class="new__timer"
         >
-            <div class="time__input">
-                <div class="time__unit hours">
+            <div 
+                class="time__input"
+            >
+                <!-- поле часов -->
+                <div 
+                    class="time__unit hours"
+                >
                     <span 
                         class="up material-icons"
-                        @click='time.hours++'
+                        @click="time.hours++"
                     >
                         expand_less
                     </span>
                     <input
-                        max='24'
-                        min='0' 
-                        type="number" 
-                        v-model='time.hours'
+                        max="24"
+                        min="0" 
+                        type="number"
+                        v-model="time.hours" 
                     >
                     <span 
                         class="down material-icons"
-                        @click='time.hours--'
+                        @click="time.hours--"
                     >
                         expand_more
                     </span>
                 </div>
+                <!-- поле минут -->
                 <div class="time__unit minutes">
-                    <span class="up"></span>
+                    <span 
+                        class="up material-icons"
+                        @click="time.minutes++"
+                    >
+                        expand_less
+                    </span>
                     <input
-                        max='60'
-                        min='0'
-                        step='5' 
+                        max="60"
+                        min="0"
+                        step="5" 
                         type="number" 
-                        v-model='time.minutes'
+                        v-model="time.minutes"
                     >
-                    <span class="down"></span>
+                    <span 
+                        class="down material-icons"
+                        @click="time.minutes--"
+                    >
+                        expand_more
+                    </span>
                 </div>
+                <!-- поле секунд -->
                 <div class="time__unit seconds">
-                    <span class="up"></span>
-                    <input 
-                        max='60'
-                        step='5'
-                        min='0'
-                        type="number" 
-                        v-model='time.seconds'
+                    <span 
+                        class="up material-icons"
+                        @click="time.seconds++"
                     >
-                    <span class="down"></span>
+                        expand_less
+                    </span>
+                    <input 
+                        max="60"
+                        step="5"
+                        min="0"
+                        type="number" 
+                        v-model="time.seconds"
+                    >
+                    <span 
+                        class="down material-icons"
+                        @click="time.seconds--"
+                    >
+                        expand_more
+                    </span>
                 </div>
             </div>
 
             <div class="add__actions">
+                <!-- кнопка подтверждения добавления таймера -->
                 <span 
-                    @click.prevent='submit'
-                    class='stop__button material-icons'
+                    @click.prevent="submit"
+                    class="stop__button material-icons"
                 >
                     done
                 </span>
+                <!-- кнопка отмены добавления -->
                 <span 
-                    @click='newTimer = false'
-                    class='close__button material-icons'
+                    @click="newTimer = false"
+                    class="close__button material-icons"
                 >
                     close
                 </span>
@@ -84,39 +114,77 @@
         data() {
             return {
                 time: {
-                    seconds: '0',
-                    minutes: '0',
-                    hours: '0'
+                    seconds: "0",
+                    minutes: "0",
+                    hours: "0"
                 },
                 newTimer: false
             }
         },
+        computed: {
+            // проверка введенных чисел на корректность
+            validateTime() {
+                let hrs = this.time.hours
+                let min = this.time.minutes
+                let sec = this.time.seconds
+                
+                if (hrs > 24) {
+                    hrs = 24
+                }
+                if (hrs < 0) {
+                    hrs = 0
+                }
+                if (min > 60) {
+                    min = 60
+                }
+                if (min < 0) {
+                    min = 0
+                }
+                if (sec > 60) {
+                    sec = 60
+                }
+                if (sec < 0) {
+                    sec = 0
+                }
+
+                return {hrs, min, sec}
+            },
+        },
         methods: {
+            // функция подтверждения создания нового таймера
             submit() {
-                console.log(this.time)
+                // формирование объекта
                 const new_timer = {
                     id: Date.now(),
                     defaultValues: {
-                        hours: this.time.hours,
-                        minutes: this.time.minutes,
-                        seconds: this.time.seconds
+                        hours: this.validateTime.hrs,
+                        minutes: this.validateTime.min,
+                        seconds: this.validateTime.sec
                     },
                     values: {
-                        hours: this.time.hours,
-                        minutes: this.time.minutes,
-                        seconds: this.time.seconds
+                        hours: this.validateTime.hrs,
+                        minutes: this.validateTime.min,
+                        seconds: this.validateTime.sec
                     },
                     active: false,
                     interval: null
                 }
-                this.$emit('add-timer', new_timer)
+                // отправка запроса на исполнение функции создания таймера
+                this.$emit("add-timer", new_timer)
                 this.newTimer = false
+                // очистка полей ввода
+                this.time = {
+                    hours: 0,
+                    minutes: 0,
+                    seconds: 0
+                }
             }
         }
     }
 </script>
 
 <style scoped>
+    /* главнй контейнер */
     .add__card {
         background-color: #696969;
         color: #9E9E9E;
@@ -125,6 +193,47 @@
         justify-items: center;
         height: 120px;
         width: 225px;
+    }
+
+    /* кнопка добавления */
+    .add__button {
+        font-size: 30px;
+        justify-self: stretch;
+        align-self: stretch;
+        display: grid;
+        align-items: center;
+        justify-items: center;
+        cursor: pointer;
+        transition: all .3s;
+    }
+
+    /* поля ввода */
+
+    .time__input {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+    }
+    .time__input .time__unit {
+        display: grid;
+        justify-items: center;
+        align-items: center;
+        grid-template-columns: 1fr;
+    }
+
+    .time__unit span {
+        font-size: 20px;
+    }
+
+    .time__input .time__unit.hours {
+        justify-self: end;
+    }
+    
+    .time__input .time__unit.minutes {
+        justify-self: center;
+    }
+
+    .time__input .time__unit.seconds {
+        justify-self: start;
     }
 
     .time__unit input {
@@ -138,17 +247,6 @@
         font-size: 25px;
     }
 
-    .add__button {
-        font-size: 30px;
-        justify-self: stretch;
-        align-self: stretch;
-        display: grid;
-        align-items: center;
-        justify-items: center;
-        cursor: pointer;
-        transition: all .3s;
-    }
-
     input[type=number]::-webkit-inner-spin-button,
     input[type=number]::-webkit-outer-spin-button
     {
@@ -156,13 +254,15 @@
         margin: 0;
     }
 
+    /* форма */
     .new__timer {
         display: grid;
         grid-row: repeat(2, 1fr);
         align-self: stretch;
         justify-self: stretch;
     }
-
+    
+    /* кнопки формы */
     .new__timer span {
         cursor: pointer;
         transition: all .3s;
@@ -177,44 +277,7 @@
         justify-items: center;
     }
     
-    
-
-    .time__input {
-        display: grid;
-        /* align-items: center;
-        justify-items: stretch; */
-        grid-template-columns: repeat(3, 1fr);
-    }
-    .time__input .time__unit {
-        display: grid;
-        /* align-items: center; */
-        justify-items: center;
-        align-items: center;
-        grid-template-columns: 1fr;
-
-    }
-
-    .time__unit span {
-        font-size: 20px;
-        /* align-self: center;
-        border-top: 1px solid white; */
-    }
-
-    .time__input .time__unit.hours {
-        justify-self: end;
-
-    }
-    
-    .time__input .time__unit.minutes {
-        justify-self: center;
-
-    }
-
-    .time__input .time__unit.seconds {
-        justify-self: start;
-
-    }
-
+    /* стили наведения на кнопки */
     .new__timer span:hover {
         color: white;
         align-items: center;
