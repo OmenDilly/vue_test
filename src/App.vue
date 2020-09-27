@@ -75,11 +75,14 @@
               activeTimer.values.minutes--
             }
           }
+
           if (activeTimer.values.minutes == 0) {
-          if (activeTimer.values.hours != 0) {
-              activeTimer.values.minutes = 59
-              activeTimer.values.seconds = 59
-              activeTimer.values.hours--
+            if (activeTimer.values.seconds == 0) {
+              if (activeTimer.values.hours != 0) {
+                  activeTimer.values.minutes = 59
+                  activeTimer.values.seconds = 59
+                  activeTimer.values.hours--
+                }
             }
           }
           // остановка таймера при окончании отсчета

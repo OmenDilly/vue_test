@@ -79,8 +79,8 @@
                 let pHours = hours >= 10 ? hours : "0" + hours
                 let pMinutes = minutes >= 10 ? minutes : "0" + minutes
                 let pSeconds = seconds >= 10 ? seconds : "0" + seconds
-                // let parsed = `${hours > 0 ? pHours + ":" : ""}${minutes > 0 ? pMinutes + ":" : ""}${pSeconds}`
-                let parsed = `${pHours}:${pMinutes}:${pSeconds}`
+                let parsed = `${hours > 0 ? pHours + ":" : ""}${(minutes > 0 || hours > 0) ? pMinutes + ":" : ""}${pSeconds}`
+                // let parsed = `${pHours}:${pMinutes}:${pSeconds}`
                 return parsed
 
             }

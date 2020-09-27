@@ -23,10 +23,12 @@
                 <!-- поле часов -->
                 <div 
                     class="time__unit hours"
+                    id='hours'
                 >
                     <span 
                         class="up material-icons"
-                        @click="time.hours++"
+                        id='increase'
+                        @click="setHrs"
                     >
                         expand_less
                     </span>
@@ -34,11 +36,13 @@
                         max="24"
                         min="0" 
                         type="number"
-                        v-model="time.hours" 
+                        id='type'
+                        v-model="time.hours"
                     >
                     <span 
                         class="down material-icons"
-                        @click="time.hours--"
+                        id='decrease'
+                        @click="setHrs"
                     >
                         expand_more
                     </span>
@@ -47,6 +51,7 @@
                 <div class="time__unit minutes">
                     <span 
                         class="up material-icons"
+                        id='increase'
                         @click="time.minutes++"
                     >
                         expand_less
@@ -60,6 +65,7 @@
                     >
                     <span 
                         class="down material-icons"
+                        id='decrease'
                         @click="time.minutes--"
                     >
                         expand_more
@@ -69,7 +75,8 @@
                 <div class="time__unit seconds">
                     <span 
                         class="up material-icons"
-                        @click="time.seconds++"
+                        id='increase'
+                        @click="setSec"
                     >
                         expand_less
                     </span>
@@ -78,11 +85,14 @@
                         step="5"
                         min="0"
                         type="number" 
-                        v-model="time.seconds"
+                        id=type
+                        @change='setSec'
+                        v-bind:value="time.seconds"
                     >
                     <span 
                         class="down material-icons"
-                        @click="time.seconds--"
+                        id='decrease'
+                        @click="setSec"
                     >
                         expand_more
                     </span>
@@ -114,9 +124,9 @@
         data() {
             return {
                 time: {
-                    seconds: "0",
-                    minutes: "0",
-                    hours: "0"
+                    seconds: 0,
+                    minutes: 0,
+                    hours: 0
                 },
                 newTimer: false
             }
@@ -127,6 +137,10 @@
                 let hrs = this.time.hours
                 let min = this.time.minutes
                 let sec = this.time.seconds
+
+                // let hrs = 0
+                // let min = 0
+                // let sec = 0
                 
                 if (hrs > 24) {
                     hrs = 24
@@ -178,6 +192,60 @@
                     minutes: 0,
                     seconds: 0
                 }
+            },
+            setHrs(e) {
+                // let timeUnit = e.currentTarget.parentElement.id
+                let action = e.currentTarget.id
+                console.log(this.time.hours)
+                // switch (timeUnit) {
+                //     case 'hours':
+                if (action === 'decrease') {
+                    if (this.time.hours == 0) {
+                        return this.time.hours
+                    }
+                    this.time.hours--
+                }
+                if (action === 'increase') {
+                    if (this.time.hours == 24) {
+                        return this.time.hours
+                    }
+                    this.time.hours++
+                }
+            },
+            setSec(e) {
+                let action = e.currentTarget.id
+                console.log(this.time.seconds)
+                // switch (timeUnit) {
+                //     case 'hours':
+                if (action === 'decrease') {
+                    if (this.time.seconds == 0) {
+                        this.time.seconds = 60
+                        if (this.time.minutes != 0) {
+                            this.time.minutes--
+                        }
+                    }
+                    this.time.seconds--
+                }
+                if (action === 'increase') {
+                    if (this.time.seconds == 59) {
+                        this.time.seconds = -1
+                        if (this.time.minutes != 59) {
+                            this.time.minutes++
+                        }
+                    }
+                    this.time.seconds++
+                }
+                // if (action === 'type') {
+                //     if (e.currentTarget.value == 0) {
+                //         this.time.hours = 0
+                //         this.time.minutes--
+                //     }
+                //     if (e.currentTarget.value == 59) {
+                //         this.time.seconds = 60
+                //         this.time.minutes--
+                //     }
+                //     return this.time.seconds
+                // }
             }
         }
     }
