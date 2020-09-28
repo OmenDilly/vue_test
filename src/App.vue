@@ -61,34 +61,45 @@
       setActive(id) {
         // поиск таймера по идентификатору
         let activeTimer = this.timers.find(item => item.id === id)
+        let hours = activeTimer.values.hours * 3600000
+        let minutes = activeTimer.values.minutes * 60000
+        let seconds = activeTimer.values.seconds * 1000
+        let milliseconds = hours + minutes + seconds
+        let time = Date.now() + milliseconds
 
         // функция запуска найденного таймера
         const startTimer = () => {
-          if (activeTimer.values.hours == 0 && activeTimer.values.minutes == 0 && activeTimer.values.seconds == 0) {
+          if (activeTimer.values.hours < 0 && activeTimer.values.minutes < 0 && activeTimer.values.seconds < 0) {
             clearInterval(this.onTimer);
             return activeTimer.active = false
           }
-          // начало отсчета
-          if (activeTimer.values.seconds != -1) {
-            activeTimer.values.seconds--
-          }
+          let startTime = Date.now() 
+          let distance = time - startTime
 
-          if (activeTimer.values.seconds == -1) {
-            if (activeTimer.values.minutes != 0) {
-              activeTimer.values.seconds = 59
-              activeTimer.values.minutes--
-            }
-          }
+          // // начало отсчета
+          // if (activeTimer.values.seconds != -1) {
+          //   activeTimer.values.seconds--
+          // }
 
-          if (activeTimer.values.minutes == 0) {
-            if (activeTimer.values.seconds == -1) {
-              if (activeTimer.values.hours != 0) {
-                  activeTimer.values.minutes = 59
-                  activeTimer.values.seconds = 59
-                  activeTimer.values.hours--
-                }
-            }
-          }
+          // if (activeTimer.values.seconds == -1) {
+          //   if (activeTimer.values.minutes != 0) {
+          //     activeTimer.values.seconds = 59
+          //     activeTimer.values.minutes--
+          //   }
+          // }
+
+          // if (activeTimer.values.minutes == 0) {
+          //   if (activeTimer.values.seconds == -1) {
+          //     if (activeTimer.values.hours != 0) {
+          //         activeTimer.values.minutes = 59
+          //         activeTimer.values.seconds = 59
+          //         activeTimer.values.hours--
+          //       }
+          //   }
+          // }
+          activeTimer.values.hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          activeTimer.values.minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+          activeTimer.values.seconds = Math.floor((distance % (1000 * 60)) / 1000);
           // остановка таймера при окончании отсчета
 
 
