@@ -64,6 +64,10 @@
 
         // функция запуска найденного таймера
         const startTimer = () => {
+          if (activeTimer.values.hours == 0 && activeTimer.values.minutes == 0 && activeTimer.values.seconds == 0) {
+            clearInterval(this.onTimer);
+            return activeTimer.active = false
+          }
           // начало отсчета
           if (activeTimer.values.seconds != -1) {
             activeTimer.values.seconds--
@@ -86,10 +90,7 @@
             }
           }
           // остановка таймера при окончании отсчета
-          if (activeTimer.values.hours == 0 && activeTimer.values.minutes == 0 && activeTimer.values.seconds == 0) {
-            clearInterval(this.onTimer);
-            activeTimer.active = false
-          }
+
 
         }
         // запуск функции отсчета

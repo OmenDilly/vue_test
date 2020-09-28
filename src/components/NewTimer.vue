@@ -37,6 +37,7 @@
                         min="0" 
                         type="number"
                         id='type'
+                        maxlength="2"
                         v-model="hours"
                     >
                     <span 
@@ -57,10 +58,11 @@
                         expand_less
                     </span>
                     <input
-                        max="60"
+                        max="59"
                         min="0"
                         step="5" 
                         type="number" 
+                        maxlength="2"
                         v-model="minutes"
                     >
                     <span 
@@ -81,7 +83,7 @@
                         expand_less
                     </span>
                     <input 
-                        max="60"
+                        max="59"
                         step="5"
                         min="0"
                         type="number" 
@@ -122,33 +124,44 @@
     export default {
         data() {
             return {
-                // time: {
                 seconds: 0,
                 minutes: 0,
                 hours: 0,
-                // },
                 newTimer: false
             }
         },
         watch: {
             // проверка значений на корректность
             seconds(val) {
+                if (!val) {
+                    this.seconds = 0
+                }
                 if (val > 59) {
-                    this.seconds = 59
+                    this.seconds = 0
+                    this.minutes++
                 }
                 if (val < 0) {
-                    this.seconds = 0
+                    this.seconds = 59
+                    this.minutes--
                 }
             },
             minutes(val) {
+                if (!val) {
+                    this.minutes = 0
+                }
                 if (val > 59) {
-                    this.minutes = 59
+                    this.minutes = 0
+                    this.hours++
                 }
                 if (val < 0) {
-                    this.minutes = 0
+                    this.minutes = 59
+                    this.hours--
                 }
             },
             hours(val) {
+                if (!val) {
+                    this.hours = 0
+                }
                 if (val > 24) {
                     this.hours = 24
                 }
@@ -174,17 +187,16 @@
                         seconds: parseInt(this.seconds)
                     },
                     active: false,
-                    interval: null
+                    interval: null,
+                    expired: false
                 }
                 // отправка запроса на исполнение функции создания таймера
                 this.$emit("add-timer", new_timer)
                 this.newTimer = false
                 // очистка полей ввода
-                this.time = {
-                    hours: 0,
-                    minutes: 0,
-                    seconds: 0
-                }
+                this.hours = 0
+                this.minutes = 0
+                this.seconds = 0
             }
         }
     }
@@ -228,7 +240,8 @@
     }
 
     .time__unit span {
-        font-size: 20px;
+        /* font-size: 10px;  */
+        user-select: none;
     }
 
     .time__input .time__unit.hours {
