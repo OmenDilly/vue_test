@@ -132,7 +132,7 @@
         cursor: pointer;
         font-size: 30px;
         justify-self: center;
-        transition: all .3s;
+        transition: all .3s cubic-bezier(0, 0.77, 0.76, 2.26);
         user-select: none;
     }
 
@@ -146,10 +146,14 @@
         /* transform: scale(1.2); */
     }
 
+    .delete__button {
+        /* transition: transform .3s cubic-bezier(0, 0.77, 0.76, 2.26) */
+    }
+
     .delete__button:hover {
         transform: rotate(-90deg) scale(1.2);
-        /* color: #E1A9B9; */
-        color: white;
+        color: #E1A9B9;
+        /* color: white; */
     }
 
     .play__button:hover {

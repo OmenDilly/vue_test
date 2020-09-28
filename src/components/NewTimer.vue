@@ -133,9 +133,9 @@
         watch: {
             // проверка значений на корректность
             seconds(val) {
-                if (!val) {
-                    this.seconds = 0
-                }
+                // if (!val) {
+                //     this.seconds = 0
+                // }
                 if (val > 59) {
                     this.seconds = 0
                     this.minutes++
@@ -146,9 +146,9 @@
                 }
             },
             minutes(val) {
-                if (!val) {
-                    this.minutes = 0
-                }
+                // if (!val) {
+                //     this.minutes = 0
+                // }
                 if (val > 59) {
                     this.minutes = 0
                     this.hours++
@@ -159,9 +159,9 @@
                 }
             },
             hours(val) {
-                if (!val) {
-                    this.hours = 0
-                }
+                // if (!val) {
+                //     this.hours = 0
+                // }
                 if (val > 24) {
                     this.hours = 24
                 }
@@ -244,21 +244,22 @@
         user-select: none;
     }
 
-    .time__input .time__unit.hours {
+    .hours {
         justify-self: end;
     }
     
-    .time__input .time__unit.minutes {
+    .minutes {
         justify-self: center;
     }
 
-    .time__input .time__unit.seconds {
+    .seconds {
         justify-self: start;
+
     }
 
     .time__unit input {
         text-align: center;
-        max-width: 25px;
+        max-width: 30px;
         background: transparent;
         border: none;
         outline: none;
@@ -287,6 +288,7 @@
         cursor: pointer;
         transition: all .3s;
         font-size: 30px;
+        user-select: none;
     }
 
     .add__actions {

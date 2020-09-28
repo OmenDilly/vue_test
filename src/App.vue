@@ -66,20 +66,20 @@
         let seconds = activeTimer.values.seconds * 1000
         let milliseconds = hours + minutes + seconds
         let time = Date.now() + milliseconds
+        let startTime = Date.now() 
 
+        console.log(hours, minutes, seconds)
         // функция запуска найденного таймера
         const startTimer = () => {
-          if (activeTimer.values.hours < 0 && activeTimer.values.minutes < 0 && activeTimer.values.seconds < 0) {
-            clearInterval(this.onTimer);
-            return activeTimer.active = false
-          }
-          let startTime = Date.now() 
+          
+          startTime = Date.now() 
           let distance = time - startTime
-
+  
           // // начало отсчета
           // if (activeTimer.values.seconds != -1) {
           //   activeTimer.values.seconds--
           // }
+          console.log(distance)
 
           // if (activeTimer.values.seconds == -1) {
           //   if (activeTimer.values.minutes != 0) {
@@ -101,7 +101,10 @@
           activeTimer.values.minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
           activeTimer.values.seconds = Math.floor((distance % (1000 * 60)) / 1000);
           // остановка таймера при окончании отсчета
-
+          if (distance <= 0) {
+            clearInterval(activeTimer.interval);
+            return activeTimer.active = false
+          }
 
         }
         // запуск функции отсчета
