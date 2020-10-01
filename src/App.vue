@@ -72,8 +72,14 @@
         // функция запуска найденного таймера
         const startTimer = () => {
           
+          
           startTime = Date.now() 
           let distance = time - startTime
+
+          if (distance < 0) {
+            clearInterval(activeTimer.interval);
+            return activeTimer.active = false
+          }
   
           // // начало отсчета
           // if (activeTimer.values.seconds != -1) {
@@ -101,10 +107,6 @@
           activeTimer.values.minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
           activeTimer.values.seconds = Math.floor((distance % (1000 * 60)) / 1000);
           // остановка таймера при окончании отсчета
-          if (distance <= 0) {
-            clearInterval(activeTimer.interval);
-            return activeTimer.active = false
-          }
 
         }
         // запуск функции отсчета

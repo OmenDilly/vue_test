@@ -104,7 +104,7 @@
                 <!-- кнопка подтверждения добавления таймера -->
                 <span 
                     @click.prevent="submit"
-                    class="stop__button material-icons"
+                    class="add__button material-icons"
                 >
                     done
                 </span>

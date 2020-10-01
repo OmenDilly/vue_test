@@ -132,7 +132,7 @@
         cursor: pointer;
         font-size: 30px;
         justify-self: center;
-        transition: all .3s cubic-bezier(0, 0.77, 0.76, 2.26);
+        transition: all .4s cubic-bezier(0, 0.27, 0, 1.56);
         user-select: none;
     }
 
